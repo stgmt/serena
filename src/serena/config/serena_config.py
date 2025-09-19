@@ -396,11 +396,17 @@ class SerenaConfig(ToolInclusionDefinition, ToStringMixin):
             return config_path
 
     @classmethod
-    def from_config_file(cls, generate_if_missing: bool = True) -> "SerenaConfig":
+    def from_config_file(cls, config_file_path: str | None = None, generate_if_missing: bool = True) -> "SerenaConfig":
         """
         Static constructor to create SerenaConfig from the configuration file
+
+        :param config_file_path: optional path to the configuration file to load
+        :param generate_if_missing: whether to generate the configuration file if it doesn't exist
         """
-        config_file_path = cls._determine_config_file_path()
+        if config_file_path is None:
+            config_file_path = cls._determine_config_file_path()
+        else:
+            config_file_path = os.path.expanduser(config_file_path)
 
         # create the configuration file from the template if necessary
         if not os.path.exists(config_file_path):
