@@ -269,7 +269,10 @@ class SerenaMCPFactory:
         :param tool_timeout: Timeout in seconds for tool execution. If not specified, will take the value from the serena configuration.
         """
         try:
-            config = SerenaConfig.from_config_file()
+            if self.serena_config_path:
+                config = SerenaConfig.from_config_file(self.serena_config_path)
+            else:
+                config = SerenaConfig.from_config_file()
 
             # update configuration with the provided parameters
             if enable_web_dashboard is not None:
@@ -323,6 +326,7 @@ class SerenaMCPFactorySingleProcess(SerenaMCPFactory):
             afterward.
         """
         super().__init__(context=context, project=project)
+        self.serena_config_path = serena_config_path
         self.agent: SerenaAgent | None = None
         self.memory_log_handler = memory_log_handler
 

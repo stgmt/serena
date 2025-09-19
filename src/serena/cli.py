@@ -132,6 +132,7 @@ class TopLevelCommands(AutoRegisteringGroup):
     )
     @click.option("--trace-lsp-communication", type=bool, is_flag=False, default=None, help="Whether to trace LSP communication.")
     @click.option("--tool-timeout", type=float, default=None, help="Override tool execution timeout in config.")
+    @click.option("--serena-config", type=str, default=None, help="Path to custom serena_config.yml to override defaults.")
     def start_mcp_server(
         project: str | None,
         project_file_arg: str | None,
@@ -145,6 +146,7 @@ class TopLevelCommands(AutoRegisteringGroup):
         log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] | None,
         trace_lsp_communication: bool | None,
         tool_timeout: float | None,
+        serena_config: str | None,
     ) -> None:
         # initialize logging, using INFO level initially (will later be adjusted by SerenaAgent according to the config)
         #   * memory log handler (for use by GUI/Dashboard)
@@ -166,7 +168,7 @@ class TopLevelCommands(AutoRegisteringGroup):
         log.info("Initializing Serena MCP server")
         log.info("Storing logs in %s", log_path)
         project_file = project_file_arg or project
-        factory = SerenaMCPFactorySingleProcess(context=context, project=project_file, memory_log_handler=memory_log_handler)
+        factory = SerenaMCPFactorySingleProcess(context=context, project=project_file, serena_config_path=serena_config, memory_log_handler=memory_log_handler)
         server = factory.create_mcp_server(
             host=host,
             port=port,

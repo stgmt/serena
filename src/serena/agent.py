@@ -210,7 +210,7 @@ class SerenaAgent:
 
         # determine the base toolset defining the set of exposed tools (which e.g. the MCP shall see),
         # limited by the Serena config, the context (which is fixed for the session) and JetBrains mode
-        tool_inclusion_definitions: list[ToolInclusionDefinition] = [self.serena_config, self._context]
+        tool_inclusion_definitions: list[ToolInclusionDefinition] = [self._context, self.serena_config]
         if self._context.name == RegisteredContext.IDE_ASSISTANT.value:
             tool_inclusion_definitions.extend(self._ide_assistant_context_tool_inclusion_definitions(project))
         if self.serena_config.jetbrains:
