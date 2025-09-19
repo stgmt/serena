@@ -1,3 +1,11 @@
+# 🍴 Serena Fork - Enhanced .NET LSP Support for Linux ARM64
+
+> **This is a fork of [oraios/serena](https://github.com/oraios/serena) with enhanced .NET language server support for Linux ARM64 platforms**
+>
+> **🔧 Key Enhancement:** Added C# language server runtime dependency overrides via `ls_specific_settings` configuration, enabling proper .NET LSP functionality on ARM64 Linux systems where standard .NET runtime detection may fail.
+>
+> **🚀 Ready for Production:** All changes have been merged to `main` branch and are ready for use with uvx/MCP integration.
+
 <p align="center" style="text-align:center">
   <img src="resources/serena-logo.svg#gh-light-mode-only" style="width:500px">
   <img src="resources/serena-logo-dark-mode.svg#gh-dark-mode-only" style="width:500px">
