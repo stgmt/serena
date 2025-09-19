@@ -47,15 +47,17 @@ class SerenaMCPRequestContext:
 
 
 class SerenaMCPFactory:
-    def __init__(self, context: str = DEFAULT_CONTEXT, project: str | None = None):
+    def __init__(self, context: str = DEFAULT_CONTEXT, project: str | None = None, serena_config_path: str | None = None):
         """
         :param context: The context name or path to context file
         :param project: Either an absolute path to the project directory or a name of an already registered project.
             If the project passed here hasn't been registered yet, it will be registered automatically and can be activated by its name
             afterward.
+        :param serena_config_path: Path to custom serena_config.yml to override defaults
         """
         self.context = SerenaAgentContext.load(context)
         self.project = project
+        self.serena_config_path = serena_config_path
 
     @staticmethod
     def _sanitize_for_openai_tools(schema: dict) -> dict:
@@ -318,16 +320,15 @@ class SerenaMCPFactorySingleProcess(SerenaMCPFactory):
     MCP server factory where the SerenaAgent and its language server run in the same process as the MCP server
     """
 
-    def __init__(self, context: str = DEFAULT_CONTEXT, project: str | None = None, memory_log_handler: MemoryLogHandler | None = None):
+    def __init__(self, context: str = DEFAULT_CONTEXT, project: str | None = None, serena_config_path: str | None = None, memory_log_handler: MemoryLogHandler | None = None):
         """
         :param context: The context name or path to context file
         :param project: Either an absolute path to the project directory or a name of an already registered project.
             If the project passed here hasn't been registered yet, it will be registered automatically and can be activated by its name
             afterward.
+        :param serena_config_path: Path to custom serena_config.yml to override defaults
         """
-        super().__init__(context=context, project=project)
-        self.serena_config_path = serena_config_path
-        self.agent: SerenaAgent | None = None
+        super().__init__(context=context, project=project, serena_config_path=serena_config_path)
         self.memory_log_handler = memory_log_handler
 
     def _instantiate_agent(self, serena_config: SerenaConfig, modes: list[SerenaAgentMode]) -> None:
